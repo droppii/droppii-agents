@@ -27,19 +27,12 @@ const flags = {
   })(),
 };
 
-// Default: if neither --claude nor --cursor specified, treat as --all
-if (!flags.claude && !flags.cursor) {
-  flags.all = true;
-}
+if (cmd === 'init' || cmd === 'sync') {
+  // Default to --all if neither --claude nor --cursor specified
+  if (!flags.claude && !flags.cursor) flags.all = true;
 
-if (cmd === 'init') {
-  init({ ...flags, isSync: false }).catch((err) => {
-    console.error('Error:', err.message);
-    process.exit(1);
-  });
-} else if (cmd === 'sync') {
-  // sync = init with --force (no overwrite prompt)
-  init({ ...flags, isSync: true, force: true }).catch((err) => {
+  const isSync = cmd === 'sync';
+  init({ ...flags, isSync, force: isSync || flags.force }).catch((err) => {
     console.error('Error:', err.message);
     process.exit(1);
   });
