@@ -101,8 +101,8 @@ function convertRules() {
 }
 
 /**
- * Convert claude/skills/<name>/SKILL.md → cursor/skills/<index>/SKILL.md
- * Numbers sequentially (alphabetical order for stability).
+ * Convert claude/skills/<name>/SKILL.md → cursor/skills/<name>/SKILL.md
+ * Preserves skill names as folder names so Cursor can identify skills by name.
  * Appends a note if script execution content is detected.
  */
 function convertSkills() {
@@ -116,12 +116,9 @@ function convertSkills() {
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
     .filter((name) => fs.existsSync(path.join(skillsDir, name, 'SKILL.md')))
-    .sort(); // alphabetical = stable numbering across rebuilds
+    .sort();
 
-  const skillsMap = {};
-
-  skillDirs.forEach((skillName, idx) => {
-    const index = idx + 1; // 1-based
+  skillDirs.forEach((skillName) => {
     const skillDir = path.join(skillsDir, skillName);
     const srcPath = path.join(skillDir, 'SKILL.md');
     let content = fs.readFileSync(srcPath, 'utf8');
@@ -153,22 +150,12 @@ function convertSkills() {
         'Cursor uses the instructions above. Run `.claude/skills/install.sh` in Claude Code to enable full capabilities.\n';
     }
 
-    const outDir = path.join(outSkillsDir, String(index));
+    const outDir = path.join(outSkillsDir, skillName);
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, 'SKILL.md'), content, 'utf8');
-
-    skillsMap[index] = skillName;
   });
 
-  // Write skills-map.json for reference (index → skill name)
-  fs.writeFileSync(
-    path.join(CURSOR_DIR, 'skills-map.json'),
-    JSON.stringify(skillsMap, null, 2),
-    'utf8'
-  );
-
   console.log(`  ✓ ${skillDirs.length} skills converted → cursor/skills/`);
-  console.log(`  ✓ cursor/skills-map.json`);
 }
 
 /**

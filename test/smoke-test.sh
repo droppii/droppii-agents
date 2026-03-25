@@ -69,8 +69,8 @@ echo "Test 6: cursor/ build output"
 PKG_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 [ -f "$PKG_ROOT/cursor/rules/development-rules.mdc" ] && pass "development-rules.mdc exists" || fail "development-rules.mdc missing"
 [ -f "$PKG_ROOT/cursor/rules/primary-workflow.mdc" ] && pass "primary-workflow.mdc exists" || fail "primary-workflow.mdc missing"
-[ -f "$PKG_ROOT/cursor/skills/1/SKILL.md" ] && pass "cursor skill 1 exists" || fail "cursor skill 1 missing"
-[ -f "$PKG_ROOT/cursor/skills-map.json" ] && pass "skills-map.json exists" || fail "skills-map.json missing"
+[ -f "$PKG_ROOT/cursor/skills/ask/SKILL.md" ] && pass "cursor skill 'ask' exists" || fail "cursor skill 'ask' missing"
+[ -f "$PKG_ROOT/cursor/skills/docs/SKILL.md" ] && pass "cursor skill 'docs' exists" || fail "cursor skill 'docs' missing"
 # Verify mdc has frontmatter
 head -1 "$PKG_ROOT/cursor/rules/development-rules.mdc" | grep -q "^---" && pass "mdc has frontmatter" || fail "mdc missing frontmatter"
 
