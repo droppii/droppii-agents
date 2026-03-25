@@ -151,7 +151,7 @@ ALWAYS create plans or reports in CURRENT WORKING PROJECT DIRECTORY.
 Read and analyze the plans, then write journal entries and archive specific plans or all plans in the `plans` directory.
 
 ## Plan Resolution
-1. If `$ARGUMENTS` provided → Use that path
+1. If `the user's message (text after the skill name)` provided → Use that path
 2. Else read all plans in the `plans` directory
 
 ## Workflow
@@ -641,7 +641,7 @@ Adversarially review an implementation plan by spawning parallel reviewer subage
 
 ## Plan Resolution
 
-1. If `$ARGUMENTS` provided → Use that path
+1. If `the user's message (text after the skill name)` provided → Use that path
 2. Else check `## Plan Context` section → Use active plan path
 3. If no plan found → Ask user to specify path or run `/ck:plan` first
 
@@ -1060,7 +1060,7 @@ Interview the user with critical questions to validate assumptions, confirm deci
 
 ## Plan Resolution
 
-1. If `$ARGUMENTS` provided → Use that path
+1. If `the user's message (text after the skill name)` provided → Use that path
 2. Else check `## Plan Context` section → Use active plan path
 3. If no plan found → Ask user to specify path or run `/ck:plan --hard` first
 

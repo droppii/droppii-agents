@@ -30,10 +30,10 @@ Present as options via `AskUserQuestion` with header "Documentation Operation", 
 
 ## Routing
 
-Parse `$ARGUMENTS` first word:
-- `init` → Load `references/init-workflow.md`
-- `update` → Load `references/update-workflow.md`
-- `summarize` → Load `references/summarize-workflow.md`
+Parse `the user's message (text after the skill name)` first word:
+- `init` → Follow the "init-workflow.md" section below under **Reference Workflows**
+- `update` → Follow the "update-workflow.md" section below under **Reference Workflows**
+- `summarize` → Follow the "summarize-workflow.md" section below under **Reference Workflows**
 - empty/unclear → AskUserQuestion (do not auto-run `init`)
 
 ## Shared Context
@@ -160,7 +160,7 @@ Pass the gathered context to docs-manager agent to update documentation:
 
 ## Additional requests
 <additional_requests>
-  $ARGUMENTS
+  the user's message (text after the skill name)
 </additional_requests>
 
 ## Phase 3: Size Check (Post-Update)

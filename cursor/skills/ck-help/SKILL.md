@@ -26,16 +26,16 @@ The script uses keyword matching with smart weighting. After getting results, **
 
 ## Translation
 
-**IMPORTANT: Always translate `$ARGUMENTS` to English before passing to script.**
+**IMPORTANT: Always translate `the user's message (text after the skill name)` to English before passing to script.**
 
-The Python script only understands English keywords. If `$ARGUMENTS` is in another language:
-1. Translate `$ARGUMENTS` to English
+The Python script only understands English keywords. If `the user's message (text after the skill name)` is in another language:
+1. Translate `the user's message (text after the skill name)` to English
 2. Pass the translated English string to the script
 
 ## Execution
 
 ```bash
-python .claude/skills/ck-help/scripts/ck-help.py "$ARGUMENTS"
+python .claude/skills/ck-help/scripts/ck-help.py "the user's message (text after the skill name)"
 ```
 
 ## Output Type Detection

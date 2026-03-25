@@ -123,6 +123,12 @@ function convertSkills() {
     const srcPath = path.join(skillDir, 'SKILL.md');
     let content = fs.readFileSync(srcPath, 'utf8');
 
+    // Replace `references/<file>.md` load instructions with inline note since refs are embedded below.
+    content = content.replace(
+      /→ Load `references\/([^`]+\.md)`/g,
+      '→ Follow the "$1" section below under **Reference Workflows**'
+    );
+
     // Inline references/ files so Cursor has full workflow without file loading.
     // Claude Code loads these dynamically; Cursor needs them embedded.
     const refsDir = path.join(skillDir, 'references');
@@ -142,6 +148,11 @@ function convertSkills() {
         }
       }
     }
+
+    // Replace Claude Code-specific $ARGUMENTS placeholder with Cursor-friendly instruction.
+    // Must run AFTER references are inlined (refs may also contain $ARGUMENTS).
+    // Claude Code injects $ARGUMENTS at runtime; Cursor reads the user's message directly.
+    content = content.replace(/\$ARGUMENTS/g, 'the user\'s message (text after the skill name)');
 
     // Append Claude-only note if skill references scripts
     if (hasScriptContent(content)) {

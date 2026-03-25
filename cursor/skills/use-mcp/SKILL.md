@@ -14,7 +14,7 @@ Execute MCP operations via **Gemini CLI** to preserve context budget.
    ```bash
    # IMPORTANT: Use stdin piping, NOT -p flag (deprecated, skips MCP init)
    # Read model from .claude/.ck.json: gemini.model (default: gemini-3-flash-preview)
-   echo "$ARGUMENTS. Return JSON only per GEMINI.md instructions." | gemini -y -m <gemini.model>
+   echo "the user's message (text after the skill name). Return JSON only per GEMINI.md instructions." | gemini -y -m <gemini.model>
    ```
 
 2. **Fallback to mcp-manager subagent** (if Gemini CLI unavailable):

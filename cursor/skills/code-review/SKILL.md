@@ -275,7 +275,7 @@ Verify. Question. Then implement.
 # Codebase Scan Workflow
 
 Think harder to scan the codebase and analyze it follow the Orchestration Protocol, Core Responsibilities, Subagents Team and Development Rules:
-<tasks>$ARGUMENTS</tasks>
+<tasks>the user's message (text after the skill name)</tasks>
 
 ## Role Responsibilities
 - You are an elite software engineering expert who specializes in system architecture design and technical decision-making.
@@ -430,7 +430,7 @@ Scout before review. Don't trust "simple changes" - scout them anyway.
 
 # Parallel Review Workflow
 
-**Ultrathink** to exhaustively list ALL potential edge cases, then dispatch parallel `code-reviewer` agents to verify: <scope>$ARGUMENTS</scope>
+**Ultrathink** to exhaustively list ALL potential edge cases, then dispatch parallel `code-reviewer` agents to verify: <scope>the user's message (text after the skill name)</scope>
 
 **IMPORTANT:** Activate needed skills. Ensure token efficiency. Sacrifice grammar for concision.
 

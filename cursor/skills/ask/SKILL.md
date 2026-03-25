@@ -7,7 +7,7 @@ argument-hint: "[technical-question]"
 # Technical Consultation
 
 Technical question or architecture challenge:
-<questions>$ARGUMENTS</questions>
+<questions>the user's message (text after the skill name)</questions>
 
 Current development workflows, system constraints, scale requirements, and business context will be considered:
 - Primary workflow: `./.claude/rules/primary-workflow.md`
