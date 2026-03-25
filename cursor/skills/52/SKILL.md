@@ -141,4 +141,346 @@ This skill handles TanStack Start/Form/AI development. Does NOT handle: TanStack
 - [TanStack AI Docs](https://tanstack.com/ai/latest/docs)
 
 
+---
+
+## Reference Workflows
+
+> The following sections are inlined from the skill's reference files for Cursor compatibility.
+
+### tanstack ai
+
+# TanStack AI Reference (Alpha)
+
+**Status: Alpha — not production-ready.**
+
+## Setup
+```bash
+npm i @tanstack/ai @tanstack/react-ai
+npm i @tanstack/ai-openai      # or @tanstack/ai-anthropic, @tanstack/ai-google
+```
+
+## Client — useChat
+```tsx
+import { useChat, fetchServerSentEvents } from '@tanstack/react-ai'
+
+function Chat() {
+  const { messages, sendMessage, isLoading } = useChat({
+    connection: fetchServerSentEvents('/api/chat'),
+  })
+
+  return (
+    <div>
+      {messages.map((m) => <div key={m.id}>{m.role}: {m.content}</div>)}
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        sendMessage({ role: 'user', content: inputValue })
+      }}>
+        <input ... />
+        <button disabled={isLoading}>Send</button>
+      </form>
+    </div>
+  )
+}
+```
+
+## Server — chat()
+```ts
+import { chat, toStreamResponse } from '@tanstack/ai'
+import { openaiAdapter } from '@tanstack/ai-openai'
+
+// TanStack Start API route
+import { createAPIFileRoute } from '@tanstack/react-start/api'
+
+export const APIRoute = createAPIFileRoute('/api/chat')({
+  POST: async ({ request }) => {
+    const { messages } = await request.json()
+    const stream = chat({
+      adapter: openaiAdapter,
+      model: 'gpt-4o',
+      messages,
+    })
+    return toStreamResponse(stream)
+  },
+})
+```
+
+## Structured Output
+```ts
+const stream = chat({
+  adapter: openaiAdapter,
+  model: 'gpt-4o',
+  messages,
+  outputSchema: z.object({
+    sentiment: z.enum(['positive', 'negative', 'neutral']),
+    summary: z.string(),
+  }),
+})
+```
+
+## Isomorphic Tools
+```ts
+import { toolDefinition } from '@tanstack/ai'
+
+const weatherTool = toolDefinition('getWeather')
+  .input(z.object({ city: z.string() }))
+  .server(async ({ input }) => {
+    return await fetchWeatherAPI(input.city)
+  })
+  .client(({ result }) => {
+    // Render tool result in UI
+    return <WeatherCard data={result} />
+  })
+```
+
+## Provider Adapters
+| Package | Provider |
+|---------|----------|
+| `@tanstack/ai-openai` | OpenAI |
+| `@tanstack/ai-anthropic` | Anthropic |
+| `@tanstack/ai-google` | Google Gemini |
+| `@tanstack/ai-ollama` | Ollama (local) |
+
+## Key Differences from Vercel AI SDK
+- Isomorphic tools (define once, run server+client) vs split implementation
+- Stronger per-model type safety
+- Framework-agnostic (React, Solid, Preact)
+- Fewer providers currently (~10 vs 25+)
+- Less mature ecosystem
+
+
+### tanstack form
+
+# TanStack Form Reference
+
+## Setup
+```bash
+npm i @tanstack/react-form
+npm i @tanstack/zod-form-adapter zod  # optional: Zod validation
+```
+
+## useForm
+```tsx
+const form = useForm({
+  defaultValues: { name: '', email: '', age: 0 },
+  validatorAdapter: zodValidator,  // optional global adapter
+  onSubmit: async ({ value }) => {
+    // value is fully typed: { name: string, email: string, age: number }
+    await api.createUser(value)
+  },
+})
+```
+
+## form.Field
+```tsx
+<form.Field
+  name="email"
+  validators={{
+    onChange: z.string().email('Invalid email'),
+    onBlur: ({ value }) => !value ? 'Required' : undefined,
+    onBlurAsync: async ({ value }) => {
+      const taken = await checkEmailTaken(value)
+      return taken ? 'Email already taken' : undefined
+    },
+    onBlurAsyncDebounceMs: 500,
+  }}
+>
+  {(field) => (
+    <div>
+      <input
+        value={field.state.value}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
+      />
+      {field.state.meta.errors.map((err) => <p key={err}>{err}</p>)}
+    </div>
+  )}
+</form.Field>
+```
+
+## Validation Events
+| Event | When | Use Case |
+|-------|------|----------|
+| `onChange` | Every keystroke | Format validation |
+| `onBlur` | Field loses focus | Required checks |
+| `onBlurAsync` | Field loses focus | Server-side checks |
+| `onSubmit` | Form submission | Final validation |
+| `onSubmitAsync` | Form submission | Async final validation |
+
+All support Zod schemas or inline functions returning `string | undefined`.
+
+## form.Subscribe — Reactive UI
+```tsx
+<form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
+  {([canSubmit, isSubmitting]) => (
+    <button type="submit" disabled={!canSubmit}>
+      {isSubmitting ? 'Saving...' : 'Submit'}
+    </button>
+  )}
+</form.Subscribe>
+```
+
+## Nested & Array Fields
+```tsx
+// Nested object
+<form.Field name="address.city">{...}</form.Field>
+
+// Array field
+<form.Field name="tags" mode="array">
+  {(field) => (
+    <>
+      {field.state.value.map((_, i) => (
+        <form.Field key={i} name={`tags[${i}]`}>
+          {(subField) => <input value={subField.state.value} ... />}
+        </form.Field>
+      ))}
+      <button onClick={() => field.pushValue('')}>Add Tag</button>
+    </>
+  )}
+</form.Field>
+```
+
+## Server-Side Validation (TanStack Start)
+```tsx
+// server
+import { createServerValidate } from '@tanstack/react-form/start'
+const serverValidate = createServerValidate({
+  validatorAdapter: zodValidator,
+  onServerValidate: z.object({ email: z.string().email() }),
+})
+
+// client — merge server errors into form state
+import { mergeForm, useTransform } from '@tanstack/react-form'
+useTransform((state) => mergeForm(state, serverState), [serverState])
+```
+
+## Form State Properties
+| Property | Type | Description |
+|----------|------|-------------|
+| `values` | `T` | Current form values |
+| `errors` | `string[]` | Form-level errors |
+| `canSubmit` | `boolean` | No errors + not submitting |
+| `isSubmitting` | `boolean` | Submission in progress |
+| `isDirty` | `boolean` | Values differ from defaults |
+| `isTouched` | `boolean` | Any field touched |
+| `isValid` | `boolean` | No validation errors |
+
+## Field State Meta
+| Property | Type | Description |
+|----------|------|-------------|
+| `errors` | `string[]` | Field validation errors |
+| `isTouched` | `boolean` | Field was blurred |
+| `isDirty` | `boolean` | Value changed from default |
+
+## Schema Adapters
+- `@tanstack/zod-form-adapter` — Zod
+- `@tanstack/valibot-form-adapter` — Valibot
+- `@tanstack/yup-form-adapter` — Yup (community)
+
+
+### tanstack start
+
+# TanStack Start Reference
+
+## CLI Commands
+```bash
+npm create @tanstack/start@latest         # scaffold project
+npm run dev                               # vite dev server
+npm run build                             # production build
+NITRO_PRESET=cloudflare-workers npm run build  # deploy target
+```
+
+## app.config.ts
+```ts
+import { defineConfig } from '@tanstack/react-start/config'
+export default defineConfig({
+  server: { preset: 'node-server' }, // or 'cloudflare-workers', 'vercel', etc.
+  tsr: { autoCodeSplitting: true },
+})
+```
+
+## File-Based Routing Conventions
+| Pattern | Route |
+|---------|-------|
+| `index.tsx` | `/` |
+| `about.tsx` | `/about` |
+| `posts.$postId.tsx` | `/posts/:postId` |
+| `posts_.tsx` | Layout for `/posts/*` |
+| `_layout.tsx` | Pathless layout group |
+| `__root.tsx` | Root layout (required) |
+
+`routeTree.gen.ts` is auto-generated — never edit manually.
+
+## createFileRoute
+```ts
+export const Route = createFileRoute('/posts/$postId')({
+  validateSearch: z.object({ page: z.number().optional() }),
+  loader: async ({ params, context }) => fetchPost(params.postId),
+  pendingComponent: () => <Spinner />,
+  errorComponent: ({ error }) => <ErrorDisplay error={error} />,
+  component: PostComponent,
+})
+```
+
+## createServerFn
+```ts
+const serverFn = createServerFn({ method: 'GET' })
+  .validator(z.object({ id: z.string() }))
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    // context.user available from middleware
+    return db.find(data.id)
+  })
+
+// Call from client or loader:
+const result = await serverFn({ data: { id: '123' } })
+```
+
+## Middleware
+```ts
+import { createMiddleware } from '@tanstack/react-start'
+
+export const authMiddleware = createMiddleware()
+  .server(async ({ next, context }) => {
+    const session = await getSession(context.request)
+    if (!session) throw redirect({ to: '/login' })
+    return next({ context: { user: session.user } })
+  })
+```
+
+Chain: `serverFn.middleware([logger, auth, rateLimit])`
+
+## API Routes
+```ts
+// src/routes/api/health.ts
+import { createAPIFileRoute } from '@tanstack/react-start/api'
+export const APIRoute = createAPIFileRoute('/api/health')({
+  GET: () => new Response(JSON.stringify({ ok: true })),
+  POST: async ({ request }) => {
+    const body = await request.json()
+    return new Response(JSON.stringify(body))
+  },
+})
+```
+
+## SSR Configuration
+Default: client-side SPA. Opt-in SSR per route:
+```ts
+export const Route = createFileRoute('/')({
+  ssr: true,           // enable SSR for this route
+  ssr: { streaming: true }, // enable streaming SSR
+})
+```
+
+## Deploy Targets (Nitro Presets)
+node-server, cloudflare-workers, cloudflare-pages, vercel, netlify, deno, bun, aws-lambda
+
+## Key Packages
+- `@tanstack/react-start` — framework
+- `@tanstack/react-router` — routing (bundled)
+- `@tanstack/react-query` — data fetching (optional but recommended)
+- `vinxi` / `nitro` — server runtime (bundled)
+
+
+
+
 > **Note (Cursor):** Script execution sections in this skill are Claude Code only. Cursor uses the instructions above. Run `.claude/skills/install.sh` in Claude Code to enable full capabilities.
