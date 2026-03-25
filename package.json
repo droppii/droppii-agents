@@ -1,0 +1,21 @@
+{
+  "name": "droppii-agents",
+  "version": "1.0.0",
+  "description": "Multi-AI coding agent setup for Claude Code + Cursor",
+  "bin": {
+    "claudekit": "./bin/claudekit.js"
+  },
+  "scripts": {
+    "build:cursor": "node src/convert.js",
+    "test": "bash test/smoke-test.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "keywords": ["claude", "cursor", "ai", "coding-agent", "tooling"],
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
