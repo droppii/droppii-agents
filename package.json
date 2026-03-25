@@ -16,6 +16,6 @@
   "keywords": ["claude", "cursor", "ai", "coding-agent", "tooling"],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:droppii/droppii-agents.git"
   }
 }

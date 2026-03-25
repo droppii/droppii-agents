@@ -9,20 +9,20 @@ Multi-AI coding agent setup for **Claude Code**, **Cursor**, and **Windsurf**. O
 ### Full setup (Claude Code + Cursor + Windsurf)
 
 ```bash
-npx github:mrgoonie/droppii-agents init
+npx github:droppii/droppii-agents init
 ```
 
 ### Per-tool install
 
 ```bash
 # Claude Code only
-npx github:mrgoonie/droppii-agents init --claude
+npx github:droppii/droppii-agents init --claude
 
 # Cursor / Windsurf only
-npx github:mrgoonie/droppii-agents init --cursor
+npx github:droppii/droppii-agents init --cursor
 
 # Preview what will be installed (no writes)
-npx github:mrgoonie/droppii-agents init --dry-run
+npx github:droppii/droppii-agents init --dry-run
 ```
 
 ## AI Tool Setup
@@ -39,7 +39,7 @@ After install, Claude Code automatically picks up `.claude/` — no extra config
 
 ### Cursor
 
-1. Run `npx github:mrgoonie/droppii-agents init --cursor` (or `--all`)
+1. Run `npx github:droppii/droppii-agents init --cursor` (or `--all`)
 2. Restart Cursor — rules and skills load automatically from `.cursor/`
 3. Rules in `.cursor/rules/` are `.mdc` files with frontmatter (auto-applied by relevance)
 4. Skills in `.cursor/skills/` are numbered folders (`1/`, `2/`, ...) each with a `SKILL.md`
@@ -48,7 +48,7 @@ After install, Claude Code automatically picks up `.claude/` — no extra config
 
 Windsurf reads `AGENTS.md` at project root for agent instructions.
 
-1. Run `npx github:mrgoonie/droppii-agents init` (installs `AGENTS.md` + `.claude/`)
+1. Run `npx github:droppii/droppii-agents init` (installs `AGENTS.md` + `.claude/`)
 2. Open Windsurf — it picks up `AGENTS.md` automatically
 3. For rules: Windsurf also supports `.cursor/rules/` — same install covers both
 
@@ -82,14 +82,14 @@ Windsurf reads `AGENTS.md` at project root for agent instructions.
 ## Update
 
 ```bash
-npx github:mrgoonie/droppii-agents sync
+npx github:droppii/droppii-agents sync
 ```
 
 ## Options
 
 ```
-npx github:mrgoonie/droppii-agents init [options]
-npx github:mrgoonie/droppii-agents sync [options]
+npx github:droppii/droppii-agents init [options]
+npx github:droppii/droppii-agents sync [options]
 
   --claude     Claude Code setup only (.claude/)
   --cursor     Cursor/Windsurf setup only (.cursor/)

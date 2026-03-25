@@ -209,7 +209,7 @@ Next steps:
   3. For Cursor/Windsurf: restart the editor to load .cursor/ rules and skills
   4. Plan templates ready at: plans/templates/
 
-Docs: https://github.com/mrgoonie/droppii-agents
+Docs: https://github.com/droppii/droppii-agents
 `);
   }
 }
