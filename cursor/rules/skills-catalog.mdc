@@ -1,0 +1,85 @@
+---
+description: Skills catalog — lists all available agent workflows and how to invoke them.
+alwaysApply: true
+---
+
+# Available Skills
+
+When the user asks to perform a task that matches a skill below, read the skill's SKILL.md file and follow its workflow.
+
+**How to invoke:** Reference the skill file directly, e.g. `@.cursor/skills/cook/SKILL.md`
+
+| Skill | Description | File |
+|-------|-------------|------|
+| `agent-browser` | AI-optimized browser automation CLI with context-efficient snapshots. Use for... | `.cursor/skills/agent-browser/SKILL.md` |
+| `ai-artist` | Generate images via Nano Banana with 129 curated prompts. Mandatory validatio... | `.cursor/skills/ai-artist/SKILL.md` |
+| `ai-multimodal` | Analyze images/audio/video with Gemini API (better vision than Claude). Gener... | `.cursor/skills/ai-multimodal/SKILL.md` |
+| `ask` | Answer technical and architectural questions with expert consultation. | `.cursor/skills/ask/SKILL.md` |
+| `backend-development` | Build backends with Node.js, Python, Go (NestJS, FastAPI, Django). Use for RE... | `.cursor/skills/backend-development/SKILL.md` |
+| `better-auth` | Add authentication with Better Auth (TypeScript). Use for email/password, OAu... | `.cursor/skills/better-auth/SKILL.md` |
+| `bootstrap` | Bootstrap new projects with research, tech stack, design, planning, and imple... | `.cursor/skills/bootstrap/SKILL.md` |
+| `brainstorm` | Brainstorm solutions with trade-off analysis and brutal honesty. Use for idea... | `.cursor/skills/brainstorm/SKILL.md` |
+| `chrome-devtools` | Automate browsers with Puppeteer CLI scripts and persistent sessions. Use for... | `.cursor/skills/chrome-devtools/SKILL.md` |
+| `ck-help` | ClaudeKit usage guide — discover commands, skills, workflows naturally. | `.cursor/skills/ck-help/SKILL.md` |
+| `code-review` | Review code quality, receive feedback with technical rigor, verify completion... | `.cursor/skills/code-review/SKILL.md` |
+| `coding-level` | Set coding experience level for tailored explanations and output format. | `.cursor/skills/coding-level/SKILL.md` |
+| `context-engineering` | Check context usage limits, monitor time remaining, optimize token consumptio... | `.cursor/skills/context-engineering/SKILL.md` |
+| `cook` | ALWAYS activate this skill before implementing EVERY feature, plan, or fix. | `.cursor/skills/cook/SKILL.md` |
+| `copywriting` | Conversion copywriting formulas, headline templates, email copy patterns, lan... | `.cursor/skills/copywriting/SKILL.md` |
+| `databases` | Design schemas, write queries for MongoDB and PostgreSQL. Use for database de... | `.cursor/skills/databases/SKILL.md` |
+| `debug` | Debug systematically with root cause analysis before fixes. Use for bugs, tes... | `.cursor/skills/debug/SKILL.md` |
+| `devops` | Deploy to Cloudflare (Workers, R2, D1), Docker, GCP (Cloud Run, GKE), Kuberne... | `.cursor/skills/devops/SKILL.md` |
+| `docs` | Analyze codebase and manage project documentation — init, update, summarize. | `.cursor/skills/docs/SKILL.md` |
+| `docs-seeker` | Search library/framework documentation via llms.txt (context7.com). Use for A... | `.cursor/skills/docs-seeker/SKILL.md` |
+| `find-skills` | Helps users discover and install agent skills when they ask questions like "h... | `.cursor/skills/find-skills/SKILL.md` |
+| `fix` | ALWAYS activate this skill before fixing ANY bug, error, test failure, CI/CD ... | `.cursor/skills/fix/SKILL.md` |
+| `frontend-design` | Create polished frontend interfaces from designs/screenshots/videos. Use for ... | `.cursor/skills/frontend-design/SKILL.md` |
+| `frontend-development` | Build React/TypeScript frontends with modern patterns. Use for components, Su... | `.cursor/skills/frontend-development/SKILL.md` |
+| `git` | Git operations with conventional commits. Use for staging, committing, pushin... | `.cursor/skills/git/SKILL.md` |
+| `gkg` | Semantic code analysis with GitLab Knowledge Graph. Use for go-to-definition,... | `.cursor/skills/gkg/SKILL.md` |
+| `google-adk-python` | Build AI agents with Google ADK Python. Multi-agent systems, A2A protocol, MC... | `.cursor/skills/google-adk-python/SKILL.md` |
+| `journal` | Write journal entries analyzing recent changes and session reflections. | `.cursor/skills/journal/SKILL.md` |
+| `kanban` | AI agent orchestration board for task visualization and team coordination. | `.cursor/skills/kanban/SKILL.md` |
+| `markdown-novel-viewer` | View markdown files with calm, book-like reading experience via HTTP server. ... | `.cursor/skills/markdown-novel-viewer/SKILL.md` |
+| `mcp-builder` | Build MCP servers for LLM-external service integration. Use for FastMCP (Pyth... | `.cursor/skills/mcp-builder/SKILL.md` |
+| `mcp-management` | Manage MCP servers - discover, analyze, execute tools/prompts/resources. Use ... | `.cursor/skills/mcp-management/SKILL.md` |
+| `media-processing` | Process media with FFmpeg (video/audio), ImageMagick (images), RMBG (AI backg... | `.cursor/skills/media-processing/SKILL.md` |
+| `mermaidjs-v11` | Create diagrams with Mermaid.js v11 syntax. Use for flowcharts, sequence diag... | `.cursor/skills/mermaidjs-v11/SKILL.md` |
+| `mintlify` | Quick introduction | `.cursor/skills/mintlify/SKILL.md` |
+| `mobile-development` | Build mobile apps with React Native, Flutter, Swift/SwiftUI, Kotlin/Jetpack C... | `.cursor/skills/mobile-development/SKILL.md` |
+| `payment-integration` | Integrate payments with SePay (VietQR), Polar, Stripe, Paddle (MoR subscripti... | `.cursor/skills/payment-integration/SKILL.md` |
+| `plan` | Plan implementations, design architectures, create technical roadmaps with de... | `.cursor/skills/plan/SKILL.md` |
+| `plans-kanban` | View plans dashboard with progress tracking and timeline visualization. Use f... | `.cursor/skills/plans-kanban/SKILL.md` |
+| `preview` | View files/directories OR generate visual explanations, slides, diagrams. | `.cursor/skills/preview/SKILL.md` |
+| `problem-solving` | Apply systematic problem-solving techniques when stuck. Use for complexity sp... | `.cursor/skills/problem-solving/SKILL.md` |
+| `project-management` | Track progress, update plan statuses, manage Claude Tasks, generate reports, ... | `.cursor/skills/project-management/SKILL.md` |
+| `react-best-practices` | React and Next.js performance optimization guidelines from Vercel Engineering... | `.cursor/skills/react-best-practices/SKILL.md` |
+| `remotion` | Best practices for Remotion - Video creation in React | `.cursor/skills/remotion/SKILL.md` |
+| `repomix` | Pack repositories into AI-friendly files with Repomix (XML, Markdown, plain t... | `.cursor/skills/repomix/SKILL.md` |
+| `research` | Research technical solutions, analyze architectures, gather requirements thor... | `.cursor/skills/research/SKILL.md` |
+| `scout` | Fast codebase scouting using parallel agents. Use for file discovery, task co... | `.cursor/skills/scout/SKILL.md` |
+| `sequential-thinking` | Apply step-by-step analysis for complex problems with revision capability. Us... | `.cursor/skills/sequential-thinking/SKILL.md` |
+| `shader` | Write GLSL fragment shaders for procedural graphics. Topics: shapes (SDF), pa... | `.cursor/skills/shader/SKILL.md` |
+| `shopify` | Build Shopify apps, extensions, themes with Shopify CLI. Use for GraphQL/REST... | `.cursor/skills/shopify/SKILL.md` |
+| `skill-creator` | Create or update Claude skills optimized for Skillmark benchmarks. Use for ne... | `.cursor/skills/skill-creator/SKILL.md` |
+| `tanstack` | Build with TanStack Start (full-stack React framework), TanStack Form (headle... | `.cursor/skills/tanstack/SKILL.md` |
+| `team` | Orchestrate Agent Teams for parallel multi-session collaboration. Use for res... | `.cursor/skills/team/SKILL.md` |
+| `template-skill` | Replace with description of the skill and when Claude should use it. | `.cursor/skills/template-skill/SKILL.md` |
+| `test` | Run unit, integration, e2e, and UI tests. Use for test execution, coverage an... | `.cursor/skills/test/SKILL.md` |
+| `threejs` | Build 3D web apps with Three.js (WebGL/WebGPU). 556 searchable examples, 60 A... | `.cursor/skills/threejs/SKILL.md` |
+| `ui-styling` | Style UIs with shadcn/ui components (Radix UI + Tailwind CSS). Use for access... | `.cursor/skills/ui-styling/SKILL.md` |
+| `ui-ux-pro-max` | UI/UX design intelligence. 50 styles, 21 palettes, 50 font pairings, 20 chart... | `.cursor/skills/ui-ux-pro-max/SKILL.md` |
+| `use-mcp` | Utilize MCP server tools with intelligent discovery and execution. | `.cursor/skills/use-mcp/SKILL.md` |
+| `watzup` | Review recent changes and wrap up the current work session. | `.cursor/skills/watzup/SKILL.md` |
+| `web-design-guidelines` | Review UI code for Web Interface Guidelines compliance. Use when asked to "re... | `.cursor/skills/web-design-guidelines/SKILL.md` |
+| `web-frameworks` | Build with Next.js (App Router, RSC, SSR, ISR), Turborepo monorepos. Use for ... | `.cursor/skills/web-frameworks/SKILL.md` |
+| `web-testing` | Web testing with Playwright, Vitest, k6. E2E/unit/integration/load/security/v... | `.cursor/skills/web-testing/SKILL.md` |
+| `worktree` | Create isolated git worktree for parallel development in monorepos. | `.cursor/skills/worktree/SKILL.md` |
+
+## Usage Examples
+
+- "use cook skill to implement login" → read `@.cursor/skills/cook/SKILL.md`
+- "run docs init" → read `@.cursor/skills/docs/SKILL.md`, follow init workflow
+- "brainstorm authentication options" → read `@.cursor/skills/brainstorm/SKILL.md`
+- "fix this bug" → read `@.cursor/skills/fix/SKILL.md`
+- "plan this feature" → read `@.cursor/skills/plan/SKILL.md`

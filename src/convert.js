@@ -105,18 +105,10 @@ function convertRules() {
  * Preserves skill names as folder names so Cursor can identify skills by name.
  * Appends a note if script execution content is detected.
  */
-function convertSkills() {
+function convertSkills(skillDirs) {
   const skillsDir = path.join(CLAUDE_DIR, 'skills');
   const outSkillsDir = path.join(CURSOR_DIR, 'skills');
   fs.mkdirSync(outSkillsDir, { recursive: true });
-
-  // Collect skill dirs that have a SKILL.md
-  const skillDirs = fs
-    .readdirSync(skillsDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name)
-    .filter((name) => fs.existsSync(path.join(skillsDir, name, 'SKILL.md')))
-    .sort();
 
   skillDirs.forEach((skillName) => {
     const skillDir = path.join(skillsDir, skillName);
@@ -170,6 +162,61 @@ function convertSkills() {
 }
 
 /**
+ * Generate cursor/rules/skills-catalog.mdc — a single always-applied rule that
+ * lists all available skills so Cursor AI knows they exist and how to invoke them.
+ * User says "use cook skill" → Cursor reads catalog → references .cursor/skills/cook/SKILL.md
+ */
+function generateSkillsCatalog(skillDirs) {
+  const rulesDir = path.join(CURSOR_DIR, 'rules');
+  fs.mkdirSync(rulesDir, { recursive: true });
+
+  const skillsDir = path.join(CLAUDE_DIR, 'skills');
+
+  // Build catalog rows: name | description | path
+  const rows = skillDirs.map((skillName) => {
+    const content = fs.readFileSync(path.join(skillsDir, skillName, 'SKILL.md'), 'utf8');
+    // Match quoted, unquoted, or YAML block scalar (>-) description in frontmatter
+    const quoted = content.match(/^description:\s*"(.+?)"\s*$/m);
+    const unquoted = content.match(/^description:\s*([^"\n>|][^\n]+)\s*$/m);
+    const blockScalar = content.match(/^description:\s*>-?\s*\n\s+(.+)/m);
+    let desc = skillName;
+    if (quoted) desc = quoted[1];
+    else if (blockScalar) desc = blockScalar[1].trim(); // check before unquoted (>- prefix)
+    else if (unquoted) desc = unquoted[1].trim();
+    // Truncate to 80 chars to keep table readable
+    if (desc.length > 80) desc = desc.slice(0, 77) + '...';
+    return `| \`${skillName}\` | ${desc} | \`.cursor/skills/${skillName}/SKILL.md\` |`;
+  });
+
+  const catalog = `---
+description: Skills catalog — lists all available agent workflows and how to invoke them.
+alwaysApply: true
+---
+
+# Available Skills
+
+When the user asks to perform a task that matches a skill below, read the skill's SKILL.md file and follow its workflow.
+
+**How to invoke:** Reference the skill file directly, e.g. \`@.cursor/skills/cook/SKILL.md\`
+
+| Skill | Description | File |
+|-------|-------------|------|
+${rows.join('\n')}
+
+## Usage Examples
+
+- "use cook skill to implement login" → read \`@.cursor/skills/cook/SKILL.md\`
+- "run docs init" → read \`@.cursor/skills/docs/SKILL.md\`, follow init workflow
+- "brainstorm authentication options" → read \`@.cursor/skills/brainstorm/SKILL.md\`
+- "fix this bug" → read \`@.cursor/skills/fix/SKILL.md\`
+- "plan this feature" → read \`@.cursor/skills/plan/SKILL.md\`
+`;
+
+  fs.writeFileSync(path.join(rulesDir, 'skills-catalog.mdc'), catalog, 'utf8');
+  console.log('  ✓ rules/skills-catalog.mdc');
+}
+
+/**
  * Main entry — wipes cursor/ and regenerates from claude/
  */
 function buildCursorTemplates() {
@@ -183,7 +230,19 @@ function buildCursorTemplates() {
   convertRules();
 
   console.log('Converting skills...');
-  convertSkills();
+  // Collect skill dirs here so we can reuse for catalog generation
+  const skillsDir = path.join(CLAUDE_DIR, 'skills');
+  const skillDirs = fs
+    .readdirSync(skillsDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .filter((name) => fs.existsSync(path.join(skillsDir, name, 'SKILL.md')))
+    .sort();
+
+  convertSkills(skillDirs);
+
+  console.log('Generating skills catalog...');
+  generateSkillsCatalog(skillDirs);
 
   console.log('\n✓ cursor/ generated successfully');
 }
