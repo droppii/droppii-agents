@@ -146,6 +146,49 @@ function convertSkills(skillDirs) {
     // Claude Code injects $ARGUMENTS at runtime; Cursor reads the user's message directly.
     content = content.replace(/\$ARGUMENTS/g, 'the user\'s message (text after the skill name)');
 
+    // Cursor has no Task tool / agent spawning. Replace spawn instructions with direct execution.
+    // Patterns: "spawn X agent via Task tool", "You MUST spawn X agent", "delegate to X agent"
+    content = content.replace(
+      /You MUST spawn [`\w-]+ agent via Task tool[^\n]*/gi,
+      'You (Cursor AI) must do this directly — no agent spawning available.'
+    );
+    content = content.replace(
+      /\*\*CRITICAL:\*\* You MUST spawn [`\w-]+ agent[^\n]*/gi,
+      '**Do this directly** — Cursor does not support agent spawning.'
+    );
+    content = content.replace(
+      /spawn [`'\w-]+ agent[s]? via Task tool/gi,
+      'perform this step directly'
+    );
+    content = content.replace(
+      /delegate to [`'\w-]+ agent/gi,
+      'do this directly'
+    );
+    content = content.replace(
+      /via Task tool/gi,
+      'directly'
+    );
+    content = content.replace(
+      /\*\*You \(main agent\) must spawn readers\*\*[^\n]*/gi,
+      '**Read all docs files directly** — no parallel agents available in Cursor.'
+    );
+    content = content.replace(
+      /Spawn \d[-–]\d+ `\w+` agents?[^\n]*/gi,
+      'Read all files directly.'
+    );
+    content = content.replace(
+      /spawn \d[-–]\d+ `\w+` agents?/gi,
+      'read them directly'
+    );
+    // Replace "Activate ck:X skill" with Cursor @-reference equivalent
+    content = content.replace(
+      /Activate `(ck:[\w-]+)` skill/gi,
+      (_, skillRef) => {
+        const skillName = skillRef.replace('ck:', '');
+        return `Follow \`@.cursor/skills/${skillName}/SKILL.md\``;
+      }
+    );
+
     // Append Claude-only note if skill references scripts
     if (hasScriptContent(content)) {
       content +=
@@ -217,6 +260,58 @@ ${rows.join('\n')}
 }
 
 /**
+ * Convert claude/agents/*.md → cursor/rules/agent-<name>.mdc
+ *
+ * Cursor has no .cursor/agents/ concept — agents are prompt-based personas.
+ * We expose each agent as an on-demand rule (alwaysApply: false) so Cursor
+ * loads its persona/instructions when the user explicitly references it.
+ *
+ * Frontmatter is extracted from the Claude agent's YAML frontmatter:
+ *   name, description → used to build the MDC header.
+ *   model, tools, memory → stripped (Claude Code only).
+ */
+function convertAgents() {
+  const agentsDir = path.join(CLAUDE_DIR, 'agents');
+  if (!fs.existsSync(agentsDir)) return;
+
+  const outDir = path.join(CURSOR_DIR, 'rules');
+  fs.mkdirSync(outDir, { recursive: true });
+
+  const files = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.md'));
+
+  for (const filename of files) {
+    const raw = fs.readFileSync(path.join(agentsDir, filename), 'utf8');
+    const baseName = filename.replace(/\.md$/, '');
+
+    // Extract description from Claude agent frontmatter
+    const descMatch = raw.match(/^description:\s*'([\s\S]+?)'\s*$/m)
+      || raw.match(/^description:\s*"([\s\S]+?)"\s*$/m)
+      || raw.match(/^description:\s*([^\n'"]+)\s*$/m);
+    const description = descMatch
+      ? descMatch[1].replace(/\s+/g, ' ').trim().slice(0, 120)
+      : `${baseName} agent persona and instructions`;
+
+    // Strip YAML frontmatter block (---...---) from agent content
+    const body = raw.replace(/^---[\s\S]*?---\n/, '').trimStart();
+
+    // Apply same Cursor-compatibility transforms as skills
+    let content = body;
+    content = content.replace(/\$ARGUMENTS/g, 'the user\'s message');
+    content = content.replace(/via Task tool/gi, 'directly');
+    content = content.replace(/delegate to [`'\w-]+ agent/gi, 'do this directly');
+
+    const frontmatter = `---\ndescription: "${description}"\nalwaysApply: false\n---\n\n`;
+    // Add agent identity header so Cursor knows what persona to adopt
+    const header = `> **Agent: ${baseName}** — When this rule is active, adopt this agent's role and follow its instructions.\n\n`;
+
+    const outPath = path.join(outDir, `agent-${baseName}.mdc`);
+    fs.writeFileSync(outPath, frontmatter + header + content, 'utf8');
+  }
+
+  console.log(`  ✓ ${files.length} agents converted → cursor/rules/agent-*.mdc`);
+}
+
+/**
  * Main entry — wipes cursor/ and regenerates from claude/
  */
 function buildCursorTemplates() {
@@ -228,6 +323,9 @@ function buildCursorTemplates() {
 
   console.log('Converting rules...');
   convertRules();
+
+  console.log('Converting agents...');
+  convertAgents();
 
   console.log('Converting skills...');
   // Collect skill dirs here so we can reuse for catalog generation

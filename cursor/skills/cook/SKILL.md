@@ -547,7 +547,7 @@ code:        0 → skip → skip → 3 → [R] → 4 → [R] → 5(user) → 6
 ## Critical Rules
 
 - Never skip steps without mode justification
-- **MANDATORY SUBAGENT DELEGATION:** Steps 4, 5, 6 MUST spawn subagents via Task tool. DO NOT implement directly.
+- **MANDATORY SUBAGENT DELEGATION:** Steps 4, 5, 6 MUST spawn subagents directly. DO NOT implement directly.
   - Step 4: `tester` (and `debugger` if failures)
   - Step 5: `code-reviewer`
   - Step 6: `project-manager`, `docs-manager`, `git-manager`

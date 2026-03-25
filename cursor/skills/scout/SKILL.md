@@ -181,7 +181,7 @@ Spawn all in single message for parallel execution.
 
 User: "Find database migration files"
 
-Spawn 3 parallel Bash agents via Task tool:
+Spawn 3 parallel Bash agents directly:
 ```
 Task 1 (Bash): "Run: gemini -y -m gemini-3-flash-preview 'Search db/, migrations/ for migration files'"
 Task 2 (Bash): "Run: gemini -y -m gemini-3-flash-preview 'Search lib/, src/ for database schema files'"

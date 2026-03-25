@@ -69,12 +69,12 @@ Use `docs/` directory as the source of truth for documentation.
 
 1. Scan the codebase and calculate the number of files with LOC in each directory (skip credentials, cache or external modules directories, such as `.claude`, `.opencode`, `.git`, `tests`, `node_modules`, `__pycache__`, `secrets`, etc.)
 2. Target directories **that actually exist** - adapt to project structure, don't hardcode paths
-3. Activate `ck:scout` skill to explore the code base and return detailed summary reports to the main agent
+3. Follow `@.cursor/skills/scout/SKILL.md` to explore the code base and return detailed summary reports to the main agent
 4. Merge scout reports into context summary
 
 ## Phase 2: Documentation Creation (docs-manager Agent)
 
-**CRITICAL:** You MUST spawn `docs-manager` agent via Task tool with merged reports. Do not wait for user input.
+**CRITICAL:** You (Cursor AI) must do this directly — no agent spawning available.
 
 Pass the gathered context to docs-manager agent to create initial documentation:
 - `README.md`: Update README with initial documentation (keep it under 300 lines)
@@ -101,7 +101,7 @@ After docs-manager completes:
 
 # Summarize Workflow
 
-Activate `ck:scout` skill to analyze the codebase and update `docs/codebase-summary.md` and respond with a summary report.
+Follow `@.cursor/skills/scout/SKILL.md` to analyze the codebase and update `docs/codebase-summary.md` and respond with a summary report.
 
 ## Arguments
 $1: Focused topics (default: all)
@@ -127,26 +127,26 @@ $2: Should scan codebase (`Boolean`, default: `false`)
 
 1. Scan the codebase and calculate the number of files with LOC in each directory (skip `.claude`, `.opencode`, `.git`, `tests`, `node_modules`, `__pycache__`, `secrets`, etc.)
 2. Target directories **that actually exist** - adapt to project structure
-3. Activate `ck:scout` skill to explore the code base and return detailed summary reports
+3. Follow `@.cursor/skills/scout/SKILL.md` to explore the code base and return detailed summary reports
 4. Merge scout reports into context summary
 
 ## Phase 1.5: Parallel Documentation Reading
 
-**You (main agent) must spawn readers** - subagents cannot spawn subagents.
+**Read all docs files directly** — no parallel agents available in Cursor.
 
 1. Count docs: `ls docs/*.md 2>/dev/null | wc -l`
 2. Get LOC: `wc -l docs/*.md 2>/dev/null | sort -rn`
 3. Strategy:
    - 1-3 files: Skip parallel reading, docs-manager reads directly
-   - 4-6 files: Spawn 2-3 `Explore` agents
-   - 7+ files: Spawn 4-5 `Explore` agents (max 5)
+   - 4-6 files: Read all files directly.
+   - 7+ files: Read all files directly.
 4. Distribute files by LOC (larger files get dedicated agent)
 5. Each agent prompt: "Read these docs, extract: purpose, key sections, areas needing update. Files: {list}"
 6. Merge results into context for docs-manager
 
 ## Phase 2: Documentation Update (docs-manager Agent)
 
-**CRITICAL:** You MUST spawn `docs-manager` agent via Task tool with merged reports and doc readings.
+**CRITICAL:** You (Cursor AI) must do this directly — no agent spawning available.
 
 Pass the gathered context to docs-manager agent to update documentation:
 - `README.md`: Update README (keep it under 300 lines)

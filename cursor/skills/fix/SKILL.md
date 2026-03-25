@@ -32,7 +32,7 @@ See `references/mode-selection.md` for AskUserQuestion format.
 
 ### Step 2: Debug
 
-- Activate `ck:debug` skill.
+- Follow `@.cursor/skills/debug/SKILL.md`.
 - Guess all possible root causes.
 - Spawn multiple `Explore` subagents in parallel to verify each hypothesis.
 - Create report with all findings for the next step.
@@ -674,7 +674,7 @@ T8 = TaskCreate(subject="Finalize & docs",            activeForm="Finalizing",  
 
 ### Step 1: Debug & Parallel Investigation
 `TaskUpdate(T1, status="in_progress")`
-Activate `ck:debug` skill. Launch 2-3 `Explore` subagents in parallel:
+Follow `@.cursor/skills/debug/SKILL.md`. Launch 2-3 `Explore` subagents in parallel:
 ```
 Task("Explore", "Find error origin", "Trace error")
 Task("Explore", "Find affected components", "Map deps")
@@ -698,7 +698,7 @@ Use `researcher` subagent for external knowledge.
 
 ### Step 3: Brainstorm
 `TaskUpdate(T3, status="in_progress")` — auto-unblocks when T1 + T2 complete.
-Activate `ck:brainstorm` skill.
+Follow `@.cursor/skills/brainstorm/SKILL.md`.
 
 - Evaluate multiple approaches
 - Consider trade-offs
@@ -860,7 +860,7 @@ Fast debug-fix-review cycle for simple issues.
 ## Steps
 
 ### Step 1: Debug
-Activate `ck:debug` skill. Find root cause quickly. Verify the root cause with multiple `Explore` subagents in parallel.
+Follow `@.cursor/skills/debug/SKILL.md`. Find root cause quickly. Verify the root cause with multiple `Explore` subagents in parallel.
 - Read error message/logs
 - Locate affected file(s)
 - Identify exact fix needed
@@ -937,7 +937,7 @@ T6 = TaskCreate(subject="Finalize",             activeForm="Finalizing",        
 
 ### Step 1: Debug & Investigate
 `TaskUpdate(T1, status="in_progress")`
-Activate `ck:debug` skill. Use `debugger` subagent if needed.
+Follow `@.cursor/skills/debug/SKILL.md`. Use `debugger` subagent if needed.
 
 - Read error messages, logs, stack traces
 - Reproduce the issue

@@ -20,7 +20,7 @@ Choose workflow based on input type:
 | Complex/award-quality | Full immersive | `./references/workflow-immersive.md` |
 | From scratch | Design Thinking below | - |
 
-**All workflows**: Activate `ck:ui-ux-pro-max` skill FIRST for design intelligence.
+**All workflows**: Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` FIRST for design intelligence.
 
 ## Screenshot/Video Replication (Quick Reference)
 
@@ -2487,8 +2487,8 @@ python scripts/gemini_batch_process.py \
 Create immersive interactive 3D designs with Three.js.
 
 ## Prerequisites
-- Activate `ck:ui-ux-pro-max` skill first
-- Activate `ck:threejs` skill for 3D and WebGL expertise
+- Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` first
+- Follow `@.cursor/skills/threejs/SKILL.md` for 3D and WebGL expertise
 - Have `ck:ai-multimodal` skill ready for asset generation
 
 ## Initial Research
@@ -2593,7 +2593,7 @@ Update `./docs/design-guidelines.md` with:
 Create detailed design documentation from screenshot/video for developer implementation.
 
 ## Prerequisites
-- Activate `ck:ui-ux-pro-max` skill first
+- Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` first
 - Have `ck:ai-multimodal` skill ready
 
 ## Workflow Steps
@@ -2684,7 +2684,7 @@ Provide implementation-ready documentation:
 Create award-quality designs with storytelling, 3D experiences, and micro-interactions.
 
 ## Prerequisites
-- Activate `ck:ui-ux-pro-max` skill first
+- Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` first
 
 ## Initial Research
 Run `ck:ui-ux-pro-max` searches:
@@ -2775,7 +2775,7 @@ Match award-winning sites:
 Rapid design creation with minimal planning overhead.
 
 ## Prerequisites
-- Activate `ck:ui-ux-pro-max` skill first
+- Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` first
 
 ## Initial Research
 Run `ck:ui-ux-pro-max` searches:
@@ -2836,7 +2836,7 @@ While moving fast, maintain:
 Replicate a design exactly from a provided screenshot.
 
 ## Prerequisites
-- Activate `ck:ui-ux-pro-max` skill first for design intelligence
+- Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` first for design intelligence
 - Have `ck:ai-multimodal` skill ready for visual analysis
 
 ## Workflow Steps
@@ -2903,7 +2903,7 @@ If approved, update `./docs/design-guidelines.md`
 Replicate a design including animations/interactions from a provided video.
 
 ## Prerequisites
-- Activate `ck:ui-ux-pro-max` skill first
+- Follow `@.cursor/skills/ui-ux-pro-max/SKILL.md` first
 - Have `ck:ai-multimodal` skill ready for video analysis
 
 ## Workflow Steps

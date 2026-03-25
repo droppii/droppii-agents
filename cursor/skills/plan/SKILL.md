@@ -664,7 +664,7 @@ Read the plan directory:
 Load: `references/red-team-personas.md`
 
 ### Step 4: Spawn Reviewers
-Launch reviewers simultaneously via Task tool with `subagent_type: "code-reviewer"`.
+Launch reviewers simultaneously directly with `subagent_type: "code-reviewer"`.
 Each reviewer prompt MUST include override, persona, plan file paths, and hostile instructions.
 Load: `references/red-team-personas.md` for reviewer prompt template.
 
@@ -752,7 +752,7 @@ repomix --remote https://github.com/mrgoonie/human-mcp
 ```
 
 ### Debugger Delegation
-- Delegate to `debugger` agent for root cause analysis
+- do this directly for root cause analysis
 - Use when investigating complex issues or bugs
 - Debugger agent specializes in diagnostic tasks
 

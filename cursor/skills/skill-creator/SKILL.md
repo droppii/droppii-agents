@@ -1841,7 +1841,7 @@ Fix all errors before distributing.
 
 ## Subagent Delegation Enforcement
 
-When a skill requires subagent delegation (via Task tool):
+When a skill requires subagent delegation (directly):
 
 1. **Use MUST language** - "Use subagent" is weak; "MUST spawn subagent" is enforceable
 2. **Include Task pattern** - Show exact syntax: `Task(subagent_type="X", prompt="Y", description="Z")`
